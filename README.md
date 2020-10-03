@@ -1,5 +1,12 @@
 # EctoWeird
 
+## Note:
+
+This repository was created to show a weird behavior with ecto and nested embedded schemas. Just run the server, navigate to http://localhost:4000/weird ,
+and submit the form. Code is entirely on the lib/ecto_weird_web/live/weird_live.ex file.
+
+## Back to before:
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
