@@ -22,7 +22,7 @@ defmodule EctoWeirdWeb.Outer do
     field :description, :string
     field :value, :string
 
-    embeds_many :items, EctoWeirdWeb.Inner
+    embeds_many :items, EctoWeirdWeb.Inner, on_replace: :delete
   end
 
   def changeset(outer, params \\ %{}) do
@@ -44,9 +44,9 @@ defmodule EctoWeirdWeb.WeirdLive do
       %Outer{
         description: "Outer changeset",
         items: [
-          %Inner{description: "Item 1"},
-          %Inner{description: "Item 2"},
-          %Inner{description: "Item 3"},
+          %Inner{id: 1, description: "Item 1"},
+          %Inner{id: 2, description: "Item 2"},
+          %Inner{id: 3, description: "Item 3"},
         ]
       }
     changeset = Outer.changeset(data)
@@ -97,6 +97,7 @@ defmodule EctoWeirdWeb.WeirdLive do
             <%= label fi, :value %>
             <%= text_input fi, :value %>
             <%= error_tag fi, :value %>
+            <%= hidden_input fi, :id %>
             </td>
           </tr>
           <% end %>
