@@ -60,8 +60,10 @@ defmodule EctoWeirdWeb.WeirdLive do
 
   @impl true
   def handle_event("submit", %{"outer" => params}, socket) do
+    IO.inspect(params)
     res = Outer.changeset(socket.assigns.data, params)
-          |> Ecto.Changeset.apply_action(:insert)
+    IO.inspect(res)
+    res = Ecto.Changeset.apply_action(res, :insert)
 
     s = case res do
           {:ok, data} ->
@@ -74,6 +76,55 @@ defmodule EctoWeirdWeb.WeirdLive do
 
     {:noreply, s}
   end
+
+  def handle_event("test1", _params, socket) do
+    params = %{
+      "items" => %{
+        "0" => %{"id" => "1", "value" => "a"},
+        "1" => %{"id" => "2", "value" => "b"},
+        "2" => %{"id" => "3", "value" => "c"}
+      },
+      "value" => ""
+    }
+
+    data =
+      %Outer{
+        description: "Outer changeset",
+        items: [
+          %Inner{id: 1, description: "Item 1"},
+          %Inner{id: 2, description: "Item 2"},
+          %Inner{id: 3, description: "Item 3"},
+        ]
+      }
+    changeset = Outer.changeset(data, params)
+    IO.inspect(changeset)
+    {:noreply, socket}
+  end
+
+  def handle_event("test2", _params, socket) do
+    params = %{
+      "items" => %{
+        "0" => %{"id" => "1", "value" => ""},
+        "1" => %{"id" => "2", "value" => ""},
+        "2" => %{"id" => "3", "value" => ""}
+      },
+      "value" => ""
+    }
+
+    data =
+      %Outer{
+        description: "Outer changeset",
+        items: [
+          %Inner{id: 1, description: "Item 1"},
+          %Inner{id: 2, description: "Item 2"},
+          %Inner{id: 3, description: "Item 3"},
+        ]
+      }
+    changeset = Outer.changeset(data, params)
+    IO.inspect(changeset)
+    {:noreply, socket}
+  end
+
 
   @impl true
   def render(assigns) do
@@ -105,6 +156,9 @@ defmodule EctoWeirdWeb.WeirdLive do
       </table>
       <button>Submit</button>
     </form>
+
+    <button phx-click="test1">Test 1</button>
+    <button phx-click="test2">Test 2</button>
     """
   end
 end
